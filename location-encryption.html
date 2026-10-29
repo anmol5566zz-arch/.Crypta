@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Crypta - Location Encryption</title>
+<title>Crypta Workspace - Location Encryption</title>
+<link rel="icon" type="image/svg+xml" href="crypta-logo.svg">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <style>
 :root{--bg:#101827;--panel:#182338;--line:#31415d;--text:#f4f7fb;--muted:#9eacc2;--accent:#7dd3fc;--dark:#163a50}
@@ -40,14 +41,17 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .form-grid > div { margin-bottom: 0; }
 </style>
+<script src="services/authService.js"></script>
+<script src="services/vaultService.js"></script>
 <script src="auth-guard.js"></script>
 </head>
 <body>
 <main class="wrap">
 <header>
-<div><div class="eyebrow">Crypta / Location</div><h1>Hide your <span>where.</span></h1><p class="subtitle">Record and encrypt your exact location details into a QR PNG.</p></div>
+<div style="display:flex;align-items:center;gap:14px;"><a href="index.html" title="Crypta Workspace Home" style="flex-shrink:0;"><img src="crypta-logo.svg" alt="Crypta Workspace Logo" style="width:42px;height:42px;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,0.3);display:block;"></a><div><div class="eyebrow"><span style="color:#fff">Crypta Workspace</span> / Location</div><h1>Hide your <span>where.</span></h1><p class="subtitle">Record and encrypt your exact location details into a QR PNG.</p></div></div>
 <nav class="nav">
 <a href="index.html">Home</a>
+<a href="vault.html">My Vault</a>
 <a href="image-encryption.html">Image</a>
 <a href="text-encryption.html">Text</a>
 <a href="audio-encryption.html">Audio</a>
@@ -117,6 +121,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 <canvas id="qr-preview" width="320" height="320"></canvas>
 <div class="actions">
 <button id="download-encrypted" class="secondary" style="width: 100%;">Download encrypted PNG</button>
+<button id="save-vault" class="secondary" style="width: 100%;">Save to Vault</button>
 </div>
 <label for="encrypted-file" style="margin-top: 15px;">Encrypted QR PNG for decryption</label>
 <input id="encrypted-file" type="file" accept="image/png,.png">
@@ -369,6 +374,23 @@ document.querySelector('#decrypt').onclick = () => run(decrypt);
 downloadButton.onclick = () => {
     if (!encryptedPngBytes) return setStatus('Encrypt a location before downloading.');
     download(new Blob([encryptedPngBytes], { type: 'image/png' }), 'crypta-encrypted-location.png');
+};
+document.querySelector('#save-vault').onclick = async () => {
+    if (!encryptedPngBytes) return setStatus('Encrypt a location before saving it to the vault.');
+    try {
+        const title = labelInput.value.trim() || localityInput.value.trim() || 'Encrypted location';
+        const saved = await window.CryptaVault.saveEncryptedPng({
+            itemType: 'location',
+            title,
+            algorithm: document.querySelector('#algorithm').value || 'AES-256-GCM',
+            bytes: encryptedPngBytes,
+            fileName: 'crypta-encrypted-location.png'
+        });
+        setStatus('Location saved to your local vault.');
+    } catch (error) {
+        console.error(error);
+        setStatus(`Vault save failed: ${error.message}`);
+    }
 };
 
 document.querySelector('#clear').onclick = () => {

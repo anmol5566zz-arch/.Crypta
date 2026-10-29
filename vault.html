@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage encrypted Crypta Workspace assets in one vault.">
+    <title>Crypta Workspace - My Vault</title>
+    <link rel="icon" type="image/svg+xml" href="crypta-logo.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="services/authService.js"></script>
+    <script src="services/vaultService.js"></script>
+    <script src="auth-guard.js"></script>
+    <style>
+        :root { color-scheme: dark; }
+        body { font-family: 'Outfit', 'Segoe UI', sans-serif; background: #080d18; color: #f4f7fb; }
+        .asset-card { background: rgba(24, 35, 56, .9); border: 1px solid #27364f; }
+        .asset-card:hover { border-color: #7dd3fc; }
+        .filter-control { background: #111a2a; border: 1px solid #31415d; color: #f4f7fb; }
+        .filter-control:focus { outline: 2px solid #7dd3fc; outline-offset: 1px; }
+        button:disabled { cursor: wait; opacity: .6; }
+    </style>
+</head>
+<body class="min-h-screen antialiased">
+    <main class="mx-auto max-w-6xl px-5 py-8 sm:px-8">
+        <header class="mb-9 flex flex-wrap items-center justify-between gap-5 border-b border-white/10 pb-6">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="flex-shrink-0 group" title="Crypta Workspace Home">
+                    <img src="crypta-logo.svg" alt="Crypta Workspace Logo" class="w-12 h-12 rounded-xl shadow-lg ring-1 ring-sky-500/20 group-hover:scale-105 transition-transform duration-300">
+                </a>
+                <div>
+                    <p class="mb-1 text-xs font-semibold uppercase tracking-[.2em] text-sky-300"><span class="text-white">Crypta Workspace</span> / Secure storage</p>
+                    <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">My Vault</h1>
+                    <p class="mt-2 max-w-2xl text-sm text-slate-400">Browse, download, and remove your encrypted assets. Vault downloads are encrypted QR PNG files and still require the original password to decrypt.</p>
+                </div>
+            </div>
+            <nav class="flex flex-wrap gap-2 text-sm" aria-label="Main navigation">
+                <a class="rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:border-sky-300 hover:text-white" href="index.html">Home</a>
+                <a class="rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:border-sky-300 hover:text-white" href="image-encryption.html">Encrypt assets</a>
+                <button id="sign-out" class="rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:border-rose-400 hover:text-white">Sign out</button>
+            </nav>
+        </header>
+
+        <section class="mb-6 grid gap-4 sm:grid-cols-3" aria-label="Vault totals">
+            <div class="rounded-xl border border-white/10 bg-white/[.03] p-5">
+                <p class="text-sm text-slate-400">Assets</p>
+                <p id="asset-count" class="mt-2 text-3xl font-semibold">—</p>
+            </div>
+            <div class="rounded-xl border border-white/10 bg-white/[.03] p-5">
+                <p class="text-sm text-slate-400">Encrypted data</p>
+                <p id="vault-size" class="mt-2 text-3xl font-semibold">—</p>
+            </div>
+            <div class="rounded-xl border border-white/10 bg-white/[.03] p-5">
+                <p class="text-sm text-slate-400">Storage</p>
+                <p id="vault-source" class="mt-2 text-xl font-semibold text-sky-300">Checking…</p>
+            </div>
+        </section>
+
+        <section class="rounded-2xl border border-white/10 bg-white/[.025] p-4 sm:p-6">
+            <div class="mb-5 flex flex-col gap-3 sm:flex-row">
+                <label class="sr-only" for="category-filter">Filter by category</label>
+                <select id="category-filter" class="filter-control rounded-lg px-3 py-2.5 sm:w-52">
+                    <option value="">All categories</option>
+                    <option value="image">Images</option>
+                    <option value="location">Locations</option>
+                    <option value="combined">Combined vaults</option>
+                    <option value="audio">Audio</option>
+                    <option value="video">Video</option>
+                    <option value="text">Text</option>
+                </select>
+                <label class="sr-only" for="search-assets">Search vault</label>
+                <input id="search-assets" class="filter-control min-w-0 flex-1 rounded-lg px-3 py-2.5" type="search" placeholder="Search vault titles">
+                <button id="refresh-vault" class="rounded-lg bg-sky-400 px-4 py-2.5 font-semibold text-slate-950 hover:bg-sky-300">Refresh</button>
+            </div>
+            <p id="status" class="mb-4 min-h-6 text-sm text-slate-400" role="status" aria-live="polite"></p>
+            <div id="asset-list" class="grid gap-3" aria-live="polite">
+                <p class="rounded-xl border border-dashed border-slate-700 p-8 text-center text-slate-400">Loading your vault…</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const assetList = document.getElementById('asset-list');
+        const status = document.getElementById('status');
+        const categoryFilter = document.getElementById('category-filter');
+        const searchInput = document.getElementById('search-assets');
+        let assets = [];
+
+        function formatBytes(bytes) {
+            const value = Number(bytes) || 0;
+            if (value < 1024) return `${value} B`;
+            const units = ['KB', 'MB', 'GB', 'TB'];
+            let size = value / 1024;
+            let unit = 0;
+            while (size >= 1024 && unit < units.length - 1) {
+                size /= 1024;
+                unit += 1;
+            }
+            return `${size.toFixed(1)} ${units[unit]}`;
+        }
+
+        function categoryName(type) {
+            return ({ image: 'Image', location: 'Location', combined: 'Combined', audio: 'Audio', video: 'Video', text: 'Text' })[type] || 'Asset';
+        }
+
+        function renderAssets() {
+            const category = categoryFilter.value;
+            const search = searchInput.value.trim().toLocaleLowerCase();
+            const visibleAssets = assets.filter(item =>
+                (!category || item.item_type === category) &&
+                (!search || String(item.title || '').toLocaleLowerCase().includes(search))
+            );
+
+            assetList.replaceChildren();
+            if (!visibleAssets.length) {
+                const empty = document.createElement('p');
+                empty.className = 'rounded-xl border border-dashed border-slate-700 p-8 text-center text-slate-400';
+                empty.textContent = assets.length ? 'No assets match these filters.' : 'Your vault is empty. Encrypt an asset and save it to your vault to see it here.';
+                assetList.appendChild(empty);
+                return;
+            }
+
+            for (const item of visibleAssets) {
+                const card = document.createElement('article');
+                card.className = 'asset-card flex flex-col justify-between gap-4 rounded-xl p-4 sm:flex-row sm:items-center';
+
+                const details = document.createElement('div');
+                details.className = 'min-w-0';
+                const title = document.createElement('h2');
+                title.className = 'truncate font-semibold text-white';
+                title.textContent = item.title || `${categoryName(item.item_type)} asset`;
+                const metadata = document.createElement('p');
+                metadata.className = 'mt-1 text-xs leading-5 text-slate-400';
+                const createdAt = item.created_at ? new Date(item.created_at) : null;
+                const dateText = createdAt && !Number.isNaN(createdAt.getTime()) ? createdAt.toLocaleString() : 'Date unavailable';
+                metadata.textContent = `${categoryName(item.item_type)} · ${formatBytes(item.metadata?.assetByteSize || item.file_size)} · ${dateText} · Local`;
+                details.append(title, metadata);
+
+                const actions = document.createElement('div');
+                actions.className = 'flex shrink-0 gap-2';
+                const downloadButton = document.createElement('button');
+                downloadButton.className = 'rounded-lg bg-sky-400 px-3 py-2 text-sm font-semibold text-slate-950 hover:bg-sky-300';
+                downloadButton.textContent = 'Download';
+                downloadButton.addEventListener('click', () => downloadAsset(item, downloadButton));
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'rounded-lg border border-rose-900/80 px-3 py-2 text-sm text-rose-300 hover:border-rose-500 hover:text-white';
+                deleteButton.textContent = 'Delete';
+                deleteButton.addEventListener('click', () => deleteAsset(item, deleteButton));
+                actions.append(downloadButton, deleteButton);
+                card.append(details, actions);
+                assetList.appendChild(card);
+            }
+        }
+
+        async function loadVault() {
+            const refreshButton = document.getElementById('refresh-vault');
+            refreshButton.disabled = true;
+            status.textContent = 'Loading vault assets…';
+            assetList.innerHTML = '<p class="rounded-xl border border-dashed border-slate-700 p-8 text-center text-slate-400">Loading your vault…</p>';
+            try {
+                const [user, results] = await Promise.all([
+                    window.CryptaAuth.getCurrentUser(),
+                    window.CryptaVault.listItems()
+                ]);
+                assets = results;
+                document.getElementById('asset-count').textContent = String(assets.length);
+                const totalSize = assets.reduce((sum, item) => sum + (Number(item.metadata?.assetByteSize) || Number(item.file_size) || 0), 0);
+                document.getElementById('vault-size').textContent = formatBytes(totalSize);
+                document.getElementById('vault-source').textContent = 'Local storage';
+                status.textContent = `${assets.length} encrypted ${assets.length === 1 ? 'asset' : 'assets'} loaded.`;
+                renderAssets();
+            } catch (error) {
+                console.error(error);
+                assets = [];
+                document.getElementById('asset-count').textContent = '—';
+                document.getElementById('vault-size').textContent = '—';
+                document.getElementById('vault-source').textContent = 'Unavailable';
+                status.textContent = `Could not load the vault: ${error.message}`;
+                assetList.replaceChildren();
+                const message = document.createElement('p');
+                message.className = 'rounded-xl border border-rose-900/70 p-5 text-rose-300';
+                message.textContent = error.message || 'Could not load the vault.';
+                assetList.appendChild(message);
+            } finally {
+                refreshButton.disabled = false;
+            }
+        }
+
+        async function downloadAsset(item, button) {
+            button.disabled = true;
+            try {
+                const fullItem = await window.CryptaVault.getItem(item.id);
+                const binary = atob(fullItem.encrypted_data);
+                const bytes = new Uint8Array(binary.length);
+                for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
+                const link = document.createElement('a');
+                const objectUrl = URL.createObjectURL(new Blob([bytes], { type: fullItem.metadata?.contentType || 'image/png' }));
+                const requestedName = fullItem.metadata?.fileName || `crypta-encrypted-${fullItem.item_type || 'asset'}.png`;
+                link.href = objectUrl;
+                link.download = requestedName.replace(/[\\/]/g, '_');
+                link.click();
+                setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+                status.textContent = `Downloaded encrypted ${categoryName(fullItem.item_type).toLowerCase()} asset.`;
+            } catch (error) {
+                console.error(error);
+                status.textContent = `Download failed: ${error.message}`;
+            } finally {
+                button.disabled = false;
+            }
+        }
+
+        async function deleteAsset(item, button) {
+            if (!confirm(`Delete "${item.title}" from your vault? This cannot be undone.`)) return;
+            button.disabled = true;
+            try {
+                await window.CryptaVault.deleteItem(item.id);
+                status.textContent = `"${item.title}" was deleted from your vault.`;
+                await loadVault();
+            } catch (error) {
+                console.error(error);
+                status.textContent = `Delete failed: ${error.message}`;
+                button.disabled = false;
+            }
+        }
+
+        categoryFilter.addEventListener('change', renderAssets);
+        searchInput.addEventListener('input', renderAssets);
+        document.getElementById('refresh-vault').addEventListener('click', loadVault);
+        document.getElementById('sign-out').addEventListener('click', () => window.CryptaAuth.signOut());
+        loadVault();
+    </script>
+</body>
+</html>

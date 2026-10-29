@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crypta - Text Encryption</title>
+<title>Crypta Workspace - Text Encryption</title>
+<link rel="icon" type="image/svg+xml" href="crypta-logo.svg">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <style>
-:root{--bg:#101827;--panel:#182338;--line:#31415d;--text:#f4f7fb;--muted:#9eacc2;--accent:#61d7b3;--accent-dark:#183d3d;--warm:#f6b86a}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top right,#203d4a 0,#101827 42%);color:var(--text);font:16px/1.5 Segoe UI,sans-serif}.wrap{max-width:1120px;margin:auto;padding:28px 18px 48px}.wrap:before{content:'CRYPTA / TEXT VAULT';display:inline-block;margin-bottom:24px;border:1px solid var(--accent);border-radius:999px;padding:5px 10px;color:var(--accent);font-size:.68rem;letter-spacing:.16em}header{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:30px}h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.05;margin:8px 0}h1 span{color:var(--accent)}h2{margin:0 0 14px}.eyebrow{color:var(--accent);text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;font-weight:700}.subtitle,small{color:var(--muted)}.nav{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end}.nav a{color:var(--muted);text-decoration:none;border:1px solid var(--line);padding:7px 10px;border-radius:7px;font-size:.85rem}.nav a:hover,.nav a.active{color:var(--text);border-color:var(--accent);background:var(--accent-dark)}.workspace{display:grid;grid-template-columns:1fr 1fr;gap:18px}.panel{background:rgba(24,35,56,.94);border:1px solid var(--line);border-radius:12px;padding:22px;box-shadow:0 18px 45px rgba(0,0,0,.2),inset 0 1px rgba(255,255,255,.04);transition:transform .25s,border-color .25s,box-shadow .25s}.panel:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 22px 55px rgba(0,0,0,.28),0 0 24px rgba(97,215,179,.1)}label{display:block;color:var(--muted);font-size:.9rem;margin:0 0 7px}textarea,input,select{width:100%;border:1px solid var(--line);border-radius:7px;background:#0d1523;color:var(--text);padding:12px;font:inherit}textarea{min-height:190px;resize:vertical}textarea:focus,input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}.field{margin-bottom:16px}.count{float:right;color:var(--muted);font-size:.75rem}.mode-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}button{border:0;border-radius:7px;padding:11px 15px;font:600 15px inherit;cursor:pointer;background:var(--accent);color:#09251f;transition:transform .2s,filter .2s}button:hover{filter:brightness(1.1);transform:translateY(-2px)}button.secondary{background:#293750;color:var(--text)}#status{min-height:25px;color:var(--accent);margin:16px 0 0}.result{margin-top:18px}.result textarea{min-height:150px}.notice{grid-column:1/-1;border:1px solid #375f67;background:rgba(19,57,63,.5);border-radius:9px;padding:13px 16px;color:#c8f3e9;font-size:.88rem}.notice strong{color:var(--accent)}@media(max-width:760px){header{display:block}.nav{justify-content:flex-start;margin-top:18px}.workspace{grid-template-columns:1fr}.notice{grid-column:auto}}
+:root{--bg:#101827;--panel:#182338;--line:#31415d;--text:#f4f7fb;--muted:#9eacc2;--accent:#61d7b3;--accent-dark:#183d3d;--warm:#f6b86a}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top right,#203d4a 0,#101827 42%);color:var(--text);font:16px/1.5 Segoe UI,sans-serif}.wrap{max-width:1120px;margin:auto;padding:28px 18px 48px}.wrap:before{content:'CRYPTA WORKSPACE / TEXT VAULT';display:inline-block;margin-bottom:24px;border:1px solid var(--accent);border-radius:999px;padding:5px 10px;color:var(--accent);font-size:.68rem;letter-spacing:.16em}header{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:30px}h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.05;margin:8px 0}h1 span{color:var(--accent)}h2{margin:0 0 14px}.eyebrow{color:var(--accent);text-transform:uppercase;letter-spacing:.15em;font-size:.75rem;font-weight:700}.subtitle,small{color:var(--muted)}.nav{display:flex;flex-wrap:wrap;gap:7px;justify-content:flex-end}.nav a{color:var(--muted);text-decoration:none;border:1px solid var(--line);padding:7px 10px;border-radius:7px;font-size:.85rem}.nav a:hover,.nav a.active{color:var(--text);border-color:var(--accent);background:var(--accent-dark)}.workspace{display:grid;grid-template-columns:1fr 1fr;gap:18px}.panel{background:rgba(24,35,56,.94);border:1px solid var(--line);border-radius:12px;padding:22px;box-shadow:0 18px 45px rgba(0,0,0,.2),inset 0 1px rgba(255,255,255,.04);transition:transform .25s,border-color .25s,box-shadow .25s}.panel:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 22px 55px rgba(0,0,0,.28),0 0 24px rgba(97,215,179,.1)}label{display:block;color:var(--muted);font-size:.9rem;margin:0 0 7px}textarea,input,select{width:100%;border:1px solid var(--line);border-radius:7px;background:#0d1523;color:var(--text);padding:12px;font:inherit}textarea{min-height:190px;resize:vertical}textarea:focus,input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}.field{margin-bottom:16px}.count{float:right;color:var(--muted);font-size:.75rem}.mode-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}button{border:0;border-radius:7px;padding:11px 15px;font:600 15px inherit;cursor:pointer;background:var(--accent);color:#09251f;transition:transform .2s,filter .2s}button:hover{filter:brightness(1.1);transform:translateY(-2px)}button.secondary{background:#293750;color:var(--text)}#status{min-height:25px;color:var(--accent);margin:16px 0 0}.result{margin-top:18px}.result textarea{min-height:150px}.notice{grid-column:1/-1;border:1px solid #375f67;background:rgba(19,57,63,.5);border-radius:9px;padding:13px 16px;color:#c8f3e9;font-size:.88rem}.notice strong{color:var(--accent)}@media(max-width:760px){header{display:block}.nav{justify-content:flex-start;margin-top:18px}.workspace{grid-template-columns:1fr}.notice{grid-column:auto}}
 .modal-overlay { position: fixed; inset: 0; background: rgba(16, 24, 39, 0.8); backdrop-filter: blur(4px); z-index: 50; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
 .modal-overlay.show { display: flex; opacity: 1; }
 .modal-overlay.show .modal-content { transform: scale(1); }
@@ -22,10 +23,12 @@
 .icon-btn { display: inline-flex; align-items: center; justify-content: center; background: none; border: none; padding: 0; margin-left: 8px; cursor: pointer; color: var(--accent); opacity: 0.8; transition: opacity 0.2s, transform 0.2s; vertical-align: middle; }
 .icon-btn:hover { opacity: 1; transform: scale(1.1); }
 </style>
+<script src="services/authService.js"></script>
+<script src="services/vaultService.js"></script>
 <script src="auth-guard.js"></script></head>
-<body><main class="wrap"><header><div><div class="eyebrow">Crypta / Text</div><h1>Encrypt <span>words.</span></h1><p class="subtitle">Encrypt text directly and download one QR PNG.</p></div><nav class="nav" aria-label="Security tools"><a href="index.html">Home</a><a href="image-encryption.html">Image</a><a class="active" href="text-encryption.html">Text</a><a href="audio-encryption.html">Audio</a><a href="video-encryption.html">Video</a><a href="location-encryption.html">Location</a></nav></header>
+<body><main class="wrap"><header><div style="display:flex;align-items:center;gap:14px;"><a href="index.html" title="Crypta Workspace Home" style="flex-shrink:0;"><img src="crypta-logo.svg" alt="Crypta Workspace Logo" style="width:42px;height:42px;border-radius:10px;box-shadow:0 4px 14px rgba(0,0,0,0.3);display:block;"></a><div><div class="eyebrow"><span style="color:#fff">Crypta Workspace</span> / Text</div><h1>Encrypt <span>words.</span></h1><p class="subtitle">Encrypt text directly and download one QR PNG.</p></div></div><nav class="nav" aria-label="Security tools"><a href="index.html">Home</a><a href="vault.html">My Vault</a><a href="image-encryption.html">Image</a><a class="active" href="text-encryption.html">Text</a><a href="audio-encryption.html">Audio</a><a href="video-encryption.html">Video</a><a href="location-encryption.html">Location</a><span id="auth-user-pill" style="display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:7px;border:1px solid var(--line);font-size:0.8rem;color:var(--muted);background:rgba(255,255,255,0.03);"><span id="auth-user-label">Guest</span><button id="auth-signout-btn" title="Sign out" style="background:none;border:none;color:#ff7675;cursor:pointer;padding:0;font-size:inherit;text-decoration:underline;">Logout</button></span></nav></header>
 <div class="notice"><strong>How to encrypt/decrypt your text?</strong> Write or paste text into the editor, or upload any text file. Enter a password and select <strong>Encrypt text</strong> to create one encrypted QR PNG. To decrypt, upload that same QR PNG, enter the password, and select <strong>Decrypt text</strong> to recover the original raw text.</div>
-<section class="workspace"><div class="panel"><h2>Text input</h2><div class="field"><label for="plaintext">Plaintext editor <span class="count"><span id="count">0 characters</span><button id="btn-text-info" class="icon-btn" title="Text Properties" style="display:none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></button></span></label><textarea id="plaintext" placeholder="Write or paste the private text here..."></textarea></div><div class="field"><label for="text-file">Upload any text file</label><input id="text-file" type="file" accept="*/*"></div><div class="field"><label for="algorithm">Encryption Algorithm</label><select id="algorithm"><option value="AES-256-GCM">AES-256-GCM (Recommended)</option><option value="ChaCha20-Poly1305">ChaCha20-Poly1305</option><option value="AES-256-CBC-HMAC">AES-256-CBC + HMAC-SHA-256</option><option value="AES-128-GCM">AES-128-GCM</option><option value="XChaCha20-Poly1305">XChaCha20-Poly1305</option><option value="Twofish">Twofish</option><option value="Serpent">Serpent</option><option value="RSA-OAEP">RSA-OAEP</option><option value="ECC-AES-Hybrid">ECC + AES Hybrid Encryption</option><option value="AES-256-CTR-HMAC">AES-256-CTR + HMAC-SHA-256</option></select></div><div class="field"><label for="password">Password</label><input id="password" type="password" placeholder="PBKDF2 derives a key"></div><div class="actions"><button id="encrypt">Encrypt text</button><button id="decrypt" class="secondary">Decrypt text</button><button id="clear" class="secondary">Clear</button></div><p id="status" role="status"></p></div>
+<section class="workspace"><div class="panel"><h2>Text input</h2><div class="field"><label for="plaintext">Plaintext editor <span class="count"><span id="count">0 characters</span><button id="btn-text-info" class="icon-btn" title="Text Properties" style="display:none;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></button></span></label><textarea id="plaintext" placeholder="Write or paste the private text here..."></textarea></div><div class="field"><label for="text-file">Upload any text file</label><input id="text-file" type="file" accept="*/*"></div><div class="field"><label for="algorithm">Encryption Algorithm</label><select id="algorithm"><option value="AES-256-GCM">AES-256-GCM (Recommended)</option><option value="ChaCha20-Poly1305">ChaCha20-Poly1305</option><option value="AES-256-CBC-HMAC">AES-256-CBC + HMAC-SHA-256</option><option value="AES-128-GCM">AES-128-GCM</option><option value="XChaCha20-Poly1305">XChaCha20-Poly1305</option><option value="Twofish">Twofish</option><option value="Serpent">Serpent</option><option value="RSA-OAEP">RSA-OAEP</option><option value="ECC-AES-Hybrid">ECC + AES Hybrid Encryption</option><option value="AES-256-CTR-HMAC">AES-256-CTR + HMAC-SHA-256</option></select></div><div class="field"><label for="password">Password</label><input id="password" type="password" placeholder="PBKDF2 derives a key"></div><div class="actions"><button id="encrypt">Encrypt text</button><button id="decrypt" class="secondary">Decrypt text</button><button id="btn-save-vault" class="secondary" title="Save encrypted text to your vault">💾 Save to Vault</button><button id="btn-browse-vault" class="secondary" title="Browse items in your vault">📂 My Vault (<span id="vault-count-badge">0</span>)</button><button id="clear" class="secondary">Clear</button></div><p id="status" role="status"></p></div>
 <div class="panel"><h2>Encrypted QR PNG</h2><div class="field"><label for="encrypted-file">Upload encrypted QR PNG for decryption</label><input id="encrypted-file" type="file" accept="image/png,.png"></div><canvas id="qr-preview" width="320" height="320" style="display:block;width:min(100%,320px);height:auto;margin:0 auto;background:#fff"></canvas><div class="actions"><button id="download-encrypted">Download encrypted PNG</button></div><div class="result"><label for="recovered">Recovered raw text</label><textarea id="recovered" readonly placeholder="Decrypted text appears here..."></textarea></div><small>The encrypted PNG contains one QR code and the full authenticated payload. Upload the same PNG to recover the original text.</small></div></section></main>
 <div id="info-modal" class="modal-overlay">
     <div class="modal-content">
@@ -49,6 +52,27 @@
             <div class="prop-row"><span class="prop-label">Estimated Size</span><span class="prop-value" id="info-size">-</span></div>
             <div class="prop-row"><span class="prop-label">Reading Time</span><span class="prop-value" id="info-read">-</span></div>
             <div class="prop-row"><span class="prop-label">Encoding</span><span class="prop-value" id="info-encoding">UTF-8</span></div>
+        </div>
+    </div>
+</div>
+<!-- Vault Modal -->
+<div id="vault-modal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 520px; max-height: 85vh; display: flex; flex-direction: column;">
+        <div class="modal-header">
+            <h3>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                Encrypted Text Vault
+            </h3>
+            <button id="btn-close-vault" class="modal-close" style="font-size: 1.2rem;">&times;</button>
+        </div>
+        <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; display: flex; justify-content: space-between;">
+            <span>Zero-Knowledge Encrypted Items</span>
+            <span id="vault-source-indicator" style="color: var(--accent);">Checking storage...</span>
+        </div>
+        <div id="vault-items-container" style="flex: 1; overflow-y: auto; max-height: 380px; padding-right: 4px;">
+            <div style="text-align: center; color: var(--muted); padding: 30px 0;">Loading vault items...</div>
         </div>
     </div>
 </div>
@@ -225,4 +249,151 @@ textFile.onchange=()=>{const file=textFile.files[0];if(!file)return;const reader
 document.querySelector('#encrypt').onclick=()=>run(encrypt);document.querySelector('#decrypt').onclick=()=>run(decrypt);
 document.querySelector('#clear').onclick=()=>{plaintext.value='';recovered.value='';password.value='';textFile.value='';encryptedFile.value='';encryptedPngBytes=null;qrPreview.getContext('2d').clearRect(0,0,320,320);updateTextStats();setStatus('Ready for a new text workflow.')};
 document.querySelector('#download-encrypted').onclick=()=>{if(!encryptedPngBytes){setStatus('Encrypt text before downloading.');return}const link=document.createElement('a');link.href=URL.createObjectURL(new Blob([encryptedPngBytes],{type:'image/png'}));link.download='crypta-encrypted-text.png';link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000)};
+// --- Vault & Auth Backend Integration ---
+async function initUserBadge() {
+    try {
+        const user = await window.CryptaAuth.getCurrentUser();
+        if (user) {
+            document.querySelector('#auth-user-label').textContent = user.name || user.email || (user.isGuest ? 'Guest' : 'User');
+        }
+        updateVaultBadgeCount();
+    } catch (e) {
+        console.warn('Auth badge error:', e);
+    }
+}
+document.querySelector('#auth-signout-btn').onclick = () => window.CryptaAuth.signOut();
+
+async function updateVaultBadgeCount() {
+    try {
+        const items = await window.CryptaVault.listItems({ itemType: 'text' });
+        document.querySelector('#vault-count-badge').textContent = items.length;
+    } catch (e) {}
+}
+
+document.querySelector('#btn-save-vault').onclick = async () => {
+    try {
+        if (!encryptedPngBytes) {
+            setStatus('⚠️ Encrypt your text first before saving to vault.');
+            return;
+        }
+        const title = (plaintext.value.slice(0, 25).trim() || 'Text Note') + ` (${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})})`;
+
+        setStatus('Saving encrypted item to vault...');
+        
+        const saved = await window.CryptaVault.saveEncryptedPng({
+            itemType: 'text',
+            title,
+            algorithm: algorithmSelect.value || 'AES-256-GCM',
+            bytes: new Uint8Array(encryptedPngBytes),
+            fileName: 'crypta-encrypted-text.png',
+            metadata: {
+                charCount: plaintext.value.length,
+                savedAt: new Date().toISOString()
+            }
+        });
+
+        updateVaultBadgeCount();
+        setStatus('✅ Encrypted note saved to your local vault!');
+    } catch (err) {
+        console.error(err);
+        setStatus(`❌ Vault save failed: ${err.message}`);
+    }
+};
+
+const vaultModal = document.querySelector('#vault-modal');
+const btnBrowseVault = document.querySelector('#btn-browse-vault');
+const btnCloseVault = document.querySelector('#btn-close-vault');
+const vaultItemsContainer = document.querySelector('#vault-items-container');
+const vaultSourceIndicator = document.querySelector('#vault-source-indicator');
+
+btnCloseVault.onclick = () => vaultModal.classList.remove('show');
+
+btnBrowseVault.onclick = async () => {
+    vaultModal.classList.add('show');
+    vaultItemsContainer.innerHTML = '<div style="text-align: center; color: var(--muted); padding: 30px 0;">Loading vault items...</div>';
+    
+    try {
+        const user = await window.CryptaAuth.getCurrentUser();
+        vaultSourceIndicator.textContent = '💾 Local Storage';
+        
+        const items = await window.CryptaVault.listItems({ itemType: 'text' });
+        document.querySelector('#vault-count-badge').textContent = items.length;
+
+        if (items.length === 0) {
+            vaultItemsContainer.innerHTML = '<div style="text-align: center; color: var(--muted); padding: 40px 0;"><p>No text items saved in your vault yet.</p><small>Encrypt any text and click "💾 Save to Vault" to store it securely.</small></div>';
+            return;
+        }
+
+        vaultItemsContainer.innerHTML = '';
+        items.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'vault-item-card';
+            const dateStr = new Date(item.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            
+            card.innerHTML = `
+                <div style="flex: 1; min-width: 0; padding-right: 12px;">
+                    <div style="font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(item.title)}</div>
+                    <div style="font-size: 0.75rem; color: var(--muted); margin-top: 4px;">
+                        <span style="color: var(--accent);">${escapeHtml(item.algorithm)}</span> • ${dateStr} • ${item.source === 'cloud' ? '☁️ Cloud' : '💾 Local'}
+                    </div>
+                </div>
+                <div style="display: flex; gap: 6px; align-items: center;">
+                    <button class="load-btn" style="background: var(--accent); color: #09251f; border: 0; border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer;">Load</button>
+                    <button class="del-btn" style="background: #2a151b; color: #ff7675; border: 1px solid #55222b; border-radius: 6px; padding: 6px 10px; font-size: 0.8rem; cursor: pointer;">&times;</button>
+                </div>
+            `;
+
+            card.querySelector('.load-btn').onclick = async () => {
+                try {
+                    setStatus('Loading item from vault...');
+                    const fullItem = await window.CryptaVault.getItem(item.id);
+                    
+                    const binStr = atob(fullItem.encrypted_data);
+                    const len = binStr.length;
+                    const bytes = new Uint8Array(len);
+                    for (let i = 0; i < len; i++) {
+                        bytes[i] = binStr.charCodeAt(i);
+                    }
+                    encryptedPngBytes = bytes;
+
+                    const blob = new Blob([bytes], { type: 'image/png' });
+                    const img = new Image();
+                    img.onload = () => {
+                        const ctx = qrPreview.getContext('2d');
+                        ctx.clearRect(0, 0, 320, 320);
+                        ctx.drawImage(img, 0, 0, 320, 320);
+                    };
+                    img.src = URL.createObjectURL(blob);
+
+                    if (fullItem.algorithm) {
+                        algorithmSelect.value = fullItem.algorithm;
+                    }
+
+                    vaultModal.classList.remove('show');
+                    setStatus(`✅ "${fullItem.title}" loaded from vault! Enter password and click "Decrypt text".`);
+                } catch (err) {
+                    setStatus(`❌ Failed to load vault item: ${err.message}`);
+                }
+            };
+
+            card.querySelector('.del-btn').onclick = async () => {
+                if (confirm(`Delete "${item.title}" from your vault?`)) {
+                    await window.CryptaVault.deleteItem(item.id);
+                    card.remove();
+                    updateVaultBadgeCount();
+                }
+            };
+
+            vaultItemsContainer.appendChild(card);
+        });
+    } catch (err) {
+        vaultItemsContainer.innerHTML = `<div style="color: #ff7675; padding: 20px; text-align: center;">Error: ${err.message}</div>`;
+    }
+};
+
+function escapeHtml(str) {
+    return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+initUserBadge();
 </script></body></html>

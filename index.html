@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Crypta is a browser-based toolkit for encrypting and decrypting data locally.">
-    <title>Crypta - 3D Homepage</title>
+    <meta name="description" content="Crypta Workspace is a browser-based toolkit for encrypting and decrypting data locally.">
+    <title>Crypta Workspace - 3D Homepage</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/svg+xml" href="crypta-logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="services/authService.js"></script>
+    <script src="services/vaultService.js"></script>
     <script src="auth-guard.js"></script>
     <style>
         :root { color-scheme: dark; }
@@ -119,54 +122,47 @@
     <section class="relative min-h-screen flex flex-col justify-between overflow-hidden">
         
         <!-- Navigation -->
-        <nav class="relative z-50 flex items-center justify-between px-8 py-6 max-w-7xl mx-auto w-full border-b border-white/5">
-            <div class="text-xl font-bold tracking-tight">Crypta</div>
-            
-            <ul class="hidden md:flex items-center gap-10 text-sm font-medium text-white/60">
-                <li class="hover:text-white transition cursor-pointer"><a href="#tools">Tools</a></li>
-                <li class="hover:text-white transition cursor-pointer"><a href="combined-encryption.html">Combined</a></li>
-                <li class="hover:text-white transition cursor-pointer">Tutorial</li>
-                <li class="hover:text-white transition cursor-pointer">Podcast</li>
-                <li class="hover:text-white transition cursor-pointer">About</li>
-            </ul>
-            
-            <button class="flex flex-col gap-1.5 p-2" aria-label="Menu">
-                <span class="w-6 h-0.5 bg-white block"></span>
-                <span class="w-6 h-0.5 bg-white block"></span>
-                <span class="w-4 h-0.5 bg-white block self-end"></span>
-            </button>
+        <nav aria-label="Main navigation" class="relative z-50 flex items-center justify-between px-8 py-6 max-w-7xl mx-auto w-full border-b border-white/5">
+            <a href="index.html" class="flex items-center gap-3 group text-white font-semibold text-lg tracking-tight">
+                <img src="crypta-logo.svg" alt="Crypta Workspace Logo" class="w-8 h-8 rounded-lg shadow-lg group-hover:scale-105 transition-transform duration-300">
+                <span class="tracking-tight text-white font-semibold">Crypta Workspace</span>
+            </a>
+            <div>
+                <ul class="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 text-xs font-medium text-white/70 sm:gap-x-7 sm:text-sm">
+                    <li><a class="transition hover:text-white" href="#tools">Tools</a></li>
+                    <li><a class="transition hover:text-white" href="vault.html">My Vault</a></li>
+                    <li><a class="transition hover:text-white" href="#about">About</a></li>
+                    <li id="index-user-badge" class="flex items-center gap-2 border-l border-white/15 pl-4 text-white/90" role="status" aria-label="Current user">
+                        <span class="inline-block h-2 w-2 rounded-full bg-emerald-400" aria-hidden="true"></span>
+                        <span id="index-user-name">Guest user</span>
+                    </li>
+                </ul>
+            </div>
         </nav>
-
         <!-- Main Content -->
         <main class="relative z-10 flex-1 flex flex-col lg:flex-row items-center max-w-7xl mx-auto w-full px-8 py-10">
             
             <!-- Left Text Content -->
             <div class="w-full lg:w-[55%] pt-10 lg:pt-0">
-                <h1 class="text-[3.5rem] md:text-[5rem] font-light leading-[1.1] mb-8 tracking-tight">
-                    Journey into Your <br>
-                    <span class="font-normal text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50">Encryption Mastery</span>
+                <h1 class="text-5xl md:text-[5rem] font-light leading-[1.1] mb-6 tracking-tight">
+                    Welcome to <br>
+                    <span class="font-normal text-white">Crypta Workspace</span>
                 </h1>
                 
-                <div class="flex flex-col md:flex-row items-start md:items-center gap-8 md:gap-12 mb-10">
-                    <p class="text-white/50 text-sm leading-relaxed max-w-sm">
-                        Crypta is a browser-based encryption toolkit for text, images, audio, video, and location data. Protect your digital life natively in your browser using advanced local encryption protocols.
+                <div class="mb-8 max-w-xl">
+                    <p class="text-white/65 text-base leading-relaxed">
+                        Encrypt text, images, audio, video, locations, or a bundle of files right in your browser. Your encrypted files stay in this browser's offline vault.
                     </p>
-                    
-                    <div class="hidden md:block w-px h-16 bg-white/10"></div>
-                    
-                    <div class="hidden md:flex flex-col gap-3">
-                        <p class="text-white/50 text-xs leading-relaxed max-w-[200px]">
-                            The best security practices discussed by our cryptography team in a podcast.
-                        </p>
-                        <a href="#" class="text-sm font-medium flex items-center gap-2 hover:text-indigo-300 transition">
-                            Go to podcast 
-                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                        </a>
-                    </div>
                 </div>
 
-                <a href="#tools" class="inline-flex items-center justify-center px-8 py-3.5 rounded-full border border-white/20 text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 backdrop-blur-md">
-                    Get started
+                <ol class="mb-8 grid max-w-xl gap-3 text-sm text-white/70 sm:grid-cols-3">
+                    <li class="rounded-xl border border-white/10 bg-white/[.04] p-3"><span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-indigo-300">1. Choose</span>Pick a tool below.</li>
+                    <li class="rounded-xl border border-white/10 bg-white/[.04] p-3"><span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-indigo-300">2. Encrypt</span>Add your content and a password.</li>
+                    <li class="rounded-xl border border-white/10 bg-white/[.04] p-3"><span class="mb-1 block text-xs font-semibold uppercase tracking-wider text-indigo-300">3. Save</span>Keep the encrypted item in My Vault.</li>
+                </ol>
+
+                <a href="#tools" class="inline-flex items-center justify-center rounded-full bg-indigo-400 px-8 py-3.5 text-sm font-semibold text-slate-950 transition hover:bg-indigo-300">
+                    Explore encryption tools
                 </a>
             </div>
 
@@ -194,39 +190,16 @@
             </div>
         </main>
 
-        <!-- Bottom UI Overlay -->
-        <div class="relative z-20 w-full max-w-7xl mx-auto px-8 pb-8 flex items-end justify-between">
-            
-            <!-- Carousel Dots -->
-            <div class="flex items-center gap-2 mb-2">
-                <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
-                <div class="w-1.5 h-1.5 rounded-full bg-white/30"></div>
-                <div class="w-1.5 h-1.5 rounded-full bg-white/30"></div>
-                <div class="w-1.5 h-1.5 rounded-full bg-white/30"></div>
-                <div class="w-1.5 h-1.5 rounded-full bg-white/30"></div>
-            </div>
-
-            <!-- Glass Registration Card -->
-            <div class="glass-card rounded-2xl p-6 w-full max-w-[320px]">
-                <h3 class="text-white font-medium text-lg mb-2">Local Workspace</h3>
-                <p class="text-white/50 text-xs leading-relaxed mb-4">
-                    All encryption is performed locally in your browser. Your files, passwords, and data never touch a remote server.
-                </p>
-                <div class="text-white text-xs font-semibold bg-white/10 w-fit px-3 py-1.5 rounded-lg border border-white/5">
-                    AES-256 GCM
-                </div>
-            </div>
-        </div>
-
         <!-- Floor Glowing Line -->
         <div class="absolute bottom-0 left-0 w-full h-px floor-glow"></div>
     </section>
 
-    <!-- TOOLS SECTION (Below the fold) -->
+    <!-- TOOLS SECTION -->
     <section id="tools" class="py-24 max-w-7xl mx-auto px-8 relative z-30">
         <div class="mb-12">
             <p class="text-sm font-semibold uppercase tracking-[.18em] text-white/40">Start here</p>
-            <h2 class="mt-2 text-3xl font-light text-white">Choose a protection mode</h2>
+            <h2 class="mt-2 text-3xl font-light text-white">What would you like to protect?</h2>
+            <p class="mt-3 max-w-2xl text-sm leading-6 text-white/55">Choose a category to open its workspace. Encrypt your content, then save the resulting encrypted item to My Vault for this browser.</p>
         </div>
         
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -286,10 +259,68 @@
         </div>
     </section>
 
+    <section id="about" class="relative z-30 mx-auto max-w-7xl px-8 pb-24">
+        <div class="mb-10 max-w-3xl">
+            <p class="text-xs font-semibold uppercase tracking-[.18em] text-indigo-300">About <span class="text-white">Crypta Workspace</span></p>
+            <h2 class="mt-2 text-3xl font-light text-white">A private workspace for everyday files.</h2>
+            <p class="mt-4 text-sm leading-7 text-white/60"><span class="text-white">Crypta Workspace</span> helps you encrypt and decrypt content in your browser. Each tool packages the encrypted result as a PNG containing a QR code. You can save that encrypted PNG to My Vault in this browser or download it for a separate backup.</p>
+        </div>
+
+        <div id="how-to-use" class="mb-8 grid gap-6 lg:grid-cols-[.8fr_1.2fr]">
+            <article class="glass-card rounded-2xl p-6 sm:p-8">
+                <p class="text-xs font-semibold uppercase tracking-[.18em] text-indigo-300">How to use it</p>
+                <h3 class="mt-2 text-2xl font-light text-white">From file to protected PNG</h3>
+                <ol class="mt-5 space-y-4 text-sm leading-6 text-white/65">
+                    <li><span class="font-semibold text-white">1. Choose a tool.</span> Select a category above. Use Combined to bundle text, media, and location details into one encrypted result.</li>
+                    <li><span class="font-semibold text-white">2. Add content and a password.</span> Select a file or enter details, then choose a strong password you can remember or store safely.</li>
+                    <li><span class="font-semibold text-white">3. Encrypt and keep the result.</span> Select the tool's encrypt action, then use Save to Vault or download the encrypted QR PNG.</li>
+                    <li><span class="font-semibold text-white">4. Decrypt when needed.</span> Open the same tool, provide the encrypted PNG and the original password, and select its decrypt action.</li>
+                </ol>
+                <a href="vault.html" class="mt-6 inline-flex rounded-lg border border-white/20 px-4 py-2 text-sm text-white transition hover:bg-white/10">Browse My Vault</a>
+            </article>
+
+            <article class="glass-card rounded-2xl p-6 sm:p-8">
+                <p class="text-xs font-semibold uppercase tracking-[.18em] text-indigo-300">What you can do</p>
+                <h3 class="mt-2 text-2xl font-light text-white">Features at a glance</h3>
+                <ul class="mt-5 grid gap-4 sm:grid-cols-2">
+                    <li class="rounded-xl border border-white/10 bg-white/[.03] p-4">
+                        <h4 class="font-medium text-white">Six workspaces</h4>
+                        <p class="mt-1 text-sm leading-6 text-white/55">Protect images, text, audio, video, locations, or combine several content types.</p>
+                    </li>
+                    <li class="rounded-xl border border-white/10 bg-white/[.03] p-4">
+                        <h4 class="font-medium text-white">Browser-side workflow</h4>
+                        <p class="mt-1 text-sm leading-6 text-white/55">Encryption and decryption happen in your browser; files and passwords are not sent to a <span class="text-white">Crypta Workspace</span> account or cloud vault.</p>
+                    </li>
+                    <li class="rounded-xl border border-white/10 bg-white/[.03] p-4">
+                        <h4 class="font-medium text-white">Encrypted QR PNGs</h4>
+                        <p class="mt-1 text-sm leading-6 text-white/55">Save the generated PNG in your local vault or download it to keep a separate copy.</p>
+                    </li>
+                    <li class="rounded-xl border border-white/10 bg-white/[.03] p-4">
+                        <h4 class="font-medium text-white">Local vault</h4>
+                        <p class="mt-1 text-sm leading-6 text-white/55">Review, filter, download, and remove encrypted items stored by this browser.</p>
+                    </li>
+                </ul>
+            </article>
+        </div>
+
+        <article class="glass-card rounded-2xl border-amber-300/20 p-6 sm:p-8">
+            <p class="text-xs font-semibold uppercase tracking-[.18em] text-amber-300">Know before you encrypt</p>
+            <h3 class="mt-2 text-2xl font-light text-white">Important limitations</h3>
+            <ul class="mt-5 grid gap-x-8 gap-y-4 text-sm leading-6 text-white/65 md:grid-cols-2">
+                <li><span class="font-semibold text-white">Passwords are not recoverable.</span> If you forget the password used to encrypt an item, <span class="text-white">Crypta Workspace</span> cannot restore it. Keep the password safe and separate from the encrypted file.</li>
+                <li><span class="font-semibold text-white">The vault belongs to this browser.</span> It does not sync to another device. Clearing site data, using private browsing, or losing the browser profile can remove saved items.</li>
+                <li><span class="font-semibold text-white">Keep your own backup.</span> Download important encrypted PNGs and store them somewhere you control. A vault entry is not a substitute for a backup.</li>
+                <li><span class="font-semibold text-white">Large files need more resources.</span> Browser memory and QR payload handling limit practical file sizes. Large media may take time or fail; use smaller files, or resize images where the tool allows it.</li>
+                <li><span class="font-semibold text-white">File support depends on your browser.</span> Audio and video formats must be supported by the browser. The image tool accepts PNG images and encrypted PNGs.</li>
+                <li><span class="font-semibold text-white">Location access is optional.</span> Getting current coordinates requires device/browser support and your permission; you can also enter location details manually.</li>
+            </ul>
+            <p class="mt-6 border-t border-white/10 pt-5 text-xs leading-5 text-white/45"><span class="text-white">Crypta Workspace</span> is a local utility, not a substitute for a separately verified backup or a security review of software for high-risk use. The recommended AES-256-GCM option is available in the encryption tools.</p>
+        </article>
+    </section>
+
     <script>
         // 1. Advanced 3D Parallax for Hero Visuals
         const visualContainer = document.querySelector('.mix-blend-screen');
-        const glassShape = document.querySelector('.glass-shape');
         const floatSquares = document.querySelectorAll('.float-square');
         const orbs = document.querySelectorAll('[class^="glow-orb"]');
         
@@ -359,6 +390,19 @@
                 card.style.transition = 'none';
             });
         });
+
+        // Initialize user badge
+        async function initIndexUser() {
+            try {
+                const user = await window.CryptaAuth.getCurrentUser();
+                if (user) {
+                    const label = user.name || user.email || (user.isGuest ? 'Guest' : 'User');
+                    const badge = document.getElementById('index-user-name');
+                    if (badge) badge.textContent = label;
+                }
+            } catch (e) {}
+        }
+        initIndexUser();
     </script>
 </body>
 </html>
